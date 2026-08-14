@@ -1,0 +1,50 @@
+# ---------------------------------------------------------------
+# 站点基本信息（部署前请检查这几项）
+# ---------------------------------------------------------------
+title: Jiahao Li
+tagline: Principal Researcher, Microsoft Research Asia
+description: >-
+  Jiahao Li is a Principal Researcher in the Media Computing Group at
+  Microsoft Research Asia, working on neural compression, visual generation,
+  video understanding, and agentic video systems.
+author: Jiahao Li
+
+# 本站是「用户主页」：仓库名 Lithium07.github.io，站点根目录就是域名根。
+# 因此 baseurl 必须留空。（若哪天改成「项目页」，即仓库名不是 <用户名>.github.io，
+# 则要把 baseurl 填成 "/仓库名"，否则 CSS 会 404。）
+url: "https://lithium07.github.io"
+baseurl: ""
+
+# 头部展示与联系方式
+email: jiahali@microsoft.com
+intern_email: li.jiahao@microsoft.com
+affiliation: Media Computing Group, Microsoft Research Asia
+scholar: https://scholar.google.com/citations?user=AcOcw0AAAAAJ&hl=en
+msr_profile: https://www.microsoft.com/en-us/research/people/jiahali/
+github:                             # ← 可选，填你的 GitHub 主页地址
+dblp:                               # ← 可选
+linkedin:                           # ← 可选
+
+# ---------------------------------------------------------------
+# 构建设置（一般不用改）
+# ---------------------------------------------------------------
+# 必须显式关掉主题。GitHub Pages 默认会套用 jekyll-theme-primer，
+# 而它自带的 assets/css/style.scss 会编译成 assets/css/style.css，
+# 和本站自己的样式表撞路径、把它覆盖掉（页面会变成没有样式的裸 HTML）。
+# 本站布局和样式都是手写的，不需要任何主题。
+theme:
+
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: true       # 换行即断行 —— publications.md 里每条 3 行的写法靠它生效
+  syntax_highlighter: rouge
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md
+  - assets/img/README.md
+  - vendor
+  - .bundle
+  - .jekyll-cache
