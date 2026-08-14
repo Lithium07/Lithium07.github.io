@@ -1,0 +1,456 @@
+/* =================================================================
+   Academic homepage — Jiahao Li
+   单文件样式表。配色集中在下面的 CSS 变量里，改一处即可换主题。
+   ================================================================= */
+
+/* ---------- 调色板：浅色（默认） ---------- */
+:root {
+  --wrap:        768px;
+
+  --bg:          #ffffff;
+  --bg-soft:     #f6f7f9;
+  --bg-elev:     #ffffff;
+  --fg:          #14161a;
+  --fg-2:        #383d45;
+  --muted:       #6a7280;
+  --border:      #e4e7ec;
+  --border-soft: #eef0f4;
+
+  --accent:      #1d4ed8;
+  --accent-2:    #3b82f6;
+  --accent-soft: #eef3ff;
+
+  --shadow:      0 1px 2px rgba(16, 24, 40, .05), 0 8px 24px -12px rgba(16, 24, 40, .12);
+  --radius:      12px;
+}
+
+/* ---------- 调色板：深色（跟随系统） ---------- */
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) {
+    --bg:          #0f1115;
+    --bg-soft:     #161920;
+    --bg-elev:     #171a21;
+    --fg:          #e9ecf1;
+    --fg-2:        #c2c8d2;
+    --muted:       #8b93a1;
+    --border:      #262b34;
+    --border-soft: #1e222a;
+
+    --accent:      #7fa9ff;
+    --accent-2:    #9dbcff;
+    --accent-soft: #182135;
+
+    --shadow:      0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -12px rgba(0, 0, 0, .6);
+  }
+}
+
+/* ---------- 调色板：深色（手动切换） ---------- */
+html[data-theme="dark"] {
+  --bg:          #0f1115;
+  --bg-soft:     #161920;
+  --bg-elev:     #171a21;
+  --fg:          #e9ecf1;
+  --fg-2:        #c2c8d2;
+  --muted:       #8b93a1;
+  --border:      #262b34;
+  --border-soft: #1e222a;
+
+  --accent:      #7fa9ff;
+  --accent-2:    #9dbcff;
+  --accent-soft: #182135;
+
+  --shadow:      0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -12px rgba(0, 0, 0, .6);
+}
+
+/* ---------- 基础 ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 24px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg-2);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Inter",
+               "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 16.5px;
+  line-height: 1.72;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.wrap {
+  position: relative;
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 0 22px;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color .15s ease, color .15s ease;
+}
+a:hover { border-bottom-color: var(--accent); }
+
+p { margin: 0 0 1.05em; }
+
+/* ---------- 深色模式开关（页面右上角，随内容滚动） ---------- */
+.theme-toggle {
+  position: absolute;
+  top: 20px;
+  right: 22px;
+  z-index: 5;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--bg-elev);
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color .15s ease, color .15s ease;
+}
+.theme-toggle:hover { color: var(--accent); border-color: var(--accent); }
+.theme-toggle .i-moon { display: none; }
+html[data-theme="dark"] .theme-toggle .i-sun  { display: none; }
+html[data-theme="dark"] .theme-toggle .i-moon { display: block; }
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .theme-toggle .i-sun  { display: none; }
+  html:not([data-theme="light"]) .theme-toggle .i-moon { display: block; }
+}
+
+/* ---------- 名片头部 ---------- */
+.hero {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  padding: 44px 0 34px;
+}
+
+.avatar {
+  position: relative;
+  flex: 0 0 132px;
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+  color: #fff;
+  font-size: 2.4rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+  box-shadow: var(--shadow);
+}
+/* 若 assets/img/profile.jpg 存在则覆盖首字母；不存在时自动回退为渐变首字母 */
+.avatar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: url("../img/profile.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.hero-body { min-width: 0; }
+
+.hero h1 {
+  margin: 0 0 6px;
+  font-size: 2.05rem;
+  line-height: 1.2;
+  font-weight: 680;
+  letter-spacing: -.022em;
+  color: var(--fg);
+}
+
+/* 职位和单位用完全一致的字号、字重、颜色，行距负责两行之间的间隔 */
+.hero .role,
+.hero .org {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 550;
+  line-height: 1.5;
+  color: var(--fg);
+}
+
+.hero-links {
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.hero-links a {
+  display: inline-block;
+  padding: 4px 11px;
+  font-size: .87rem;
+  font-weight: 500;
+  color: var(--fg-2);
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+.hero-links a:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+/* ---------- 章节标题 ---------- */
+h2 {
+  margin: 46px 0 18px;
+  font-size: 1.02rem;
+  font-weight: 650;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--fg);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+h2::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ---------- 研究方向标签 ---------- */
+.chips {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chips li {
+  padding: 5px 12px;
+  font-size: .88rem;
+  font-weight: 500;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  border-radius: 8px;
+}
+
+/* ---------- News（当前首页未使用；想恢复 News 版块时直接套这套样式） ---------- */
+.news {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.news li {
+  display: flex;
+  gap: 14px;
+  padding: 9px 0;
+  border-bottom: 1px dashed var(--border-soft);
+  font-size: .96rem;
+}
+.news li:last-child { border-bottom: 0; }
+.news .tag {
+  flex: 0 0 102px;
+  white-space: nowrap;
+  font-size: .78rem;
+  font-weight: 650;
+  letter-spacing: .03em;
+  color: var(--accent);
+  text-transform: uppercase;
+  padding-top: 3px;
+}
+
+/* ---------- 时间线（教育 / 经历） ---------- */
+.timeline {
+  margin: 0;
+  padding: 0 0 0 20px;
+  list-style: none;
+  border-left: 2px solid var(--border);
+}
+.timeline li {
+  position: relative;
+  padding: 0 0 18px 4px;
+}
+.timeline li::before {
+  content: "";
+  position: absolute;
+  left: -27px;
+  top: 9px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--accent);
+}
+.timeline .deg { color: var(--fg); font-weight: 600; }
+.timeline .where { color: var(--fg-2); }
+.timeline .when { color: var(--muted); font-size: .88rem; }
+
+/* ---------- 提示卡片 ---------- */
+.callout {
+  margin: 4px 0 0;
+  padding: 15px 18px;
+  background: var(--accent-soft);
+  border: 1px solid color-mix(in srgb, var(--accent) 22%, transparent);
+  border-radius: var(--radius);
+  font-size: .96rem;
+}
+.callout strong { color: var(--fg); }
+.callout p:last-child { margin-bottom: 0; }
+
+/* =================================================================
+   论文列表 —— 内容来自 publications.md
+   结构约定：### 年份  /  每条一段：**标题** <br> 作者(**自己**加粗) <br> *会议*
+   ================================================================= */
+.pubs { margin-top: 4px; }
+
+/* 年份分组标题（当前未使用 —— 论文是不分年份的平铺列表。
+   若想恢复分组，在 publications.md 里插 `### 2026` 这样的行即可） */
+.pubs h3 {
+  margin: 26px 0 12px;
+  font-size: .82rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.pubs h3::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border-soft);
+}
+.pubs h3:first-child { margin-top: 6px; }
+
+/* 每条论文一个 <p>，靠 <br> 分成 标题 / 作者 / venue 三行。
+   左右负 margin 让悬停高亮溢出到栏外，而文字仍与正文左对齐。 */
+.pubs p {
+  margin: 0 -13px 3px;
+  padding: 9px 13px 9px 11px;
+  border-left: 2px solid transparent;
+  border-radius: 8px;
+  font-size: .93rem;
+  line-height: 1.62;
+  color: var(--muted);
+  transition: background .15s ease, border-color .15s ease;
+}
+.pubs p:hover {
+  background: var(--bg-soft);
+  border-left-color: var(--accent);
+}
+
+/* 第一处加粗 = 论文标题 */
+.pubs p > strong:first-child {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -.008em;
+  color: var(--fg);
+}
+
+/* 其余加粗 = 本人姓名 */
+.pubs p > strong:not(:first-child) {
+  color: var(--accent);
+  font-weight: 650;
+}
+
+/* 斜体 = 发表 venue，渲染成小徽章 */
+.pubs p > em {
+  display: inline-block;
+  padding: 1px 7px;
+  font-style: normal;
+  font-size: .78rem;
+  font-weight: 650;
+  line-height: 1.5;
+  letter-spacing: .015em;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: 5px;
+}
+
+/* Paper / Code / Project 链接。
+   垂直 padding 加在 inline 元素上只扩大可点击区、不会撑高行盒，
+   所以点击区从 17px 提到 ~25px 而版面纹丝不动。
+   水平 padding 用等量负 margin 抵消，视觉间距保持原样。
+   下划线改用 text-decoration：基础 a 的 border-bottom 会被 padding 推离文字。 */
+.pubs p a {
+  font-size: .84rem;
+  font-weight: 550;
+  padding: 4px 3px;
+  margin: 0 -3px;
+  border-bottom: 0;
+}
+.pubs p a:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+
+.pub-note {
+  margin: 0 0 18px;
+  font-size: .9rem;
+  color: var(--muted);
+}
+
+/* ---------- 联系方式 ---------- */
+.contact {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 8px 16px;
+  font-size: .96rem;
+}
+.contact dt { color: var(--muted); font-size: .88rem; padding-top: 1px; }
+.contact dd { margin: 0; color: var(--fg-2); }
+
+/* ---------- 页脚 ---------- */
+.site-footer {
+  margin-top: 40px;
+  padding: 26px 0 42px;
+  border-top: 1px solid var(--border-soft);
+  color: var(--muted);
+  font-size: .85rem;
+}
+.site-footer p { margin: 0; }
+
+/* ---------- 响应式 ---------- */
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+
+  .theme-toggle { top: 14px; right: 18px; }
+
+  .hero {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 56px 0 26px;   /* 顶部留出开关的位置 */
+  }
+  .avatar { flex-basis: 100px; width: 100px; height: 100px; font-size: 1.9rem; }
+  .hero h1 { font-size: 1.72rem; }
+
+  .news li { flex-direction: column; gap: 2px; }
+  .news .tag { flex-basis: auto; padding-top: 0; }
+
+  .contact { grid-template-columns: 1fr; gap: 2px; }
+  .contact dd { margin-bottom: 8px; }
+
+  .pubs p { padding-left: 10px; padding-right: 8px; }
+}
+
+/* ---------- 打印（导出 PDF 版 CV 时可用） ---------- */
+@media print {
+  .site-footer, .theme-toggle { display: none; }
+  body { font-size: 11pt; color: #000; background: #fff; }
+  .pubs p { break-inside: avoid; }
+  a { color: #000; }
+}
